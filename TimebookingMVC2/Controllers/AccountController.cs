@@ -17,41 +17,39 @@ namespace TimebookingMVC2.Controllers
             return View();
         }
 
-        [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult> PostRegister(RegisterModel model)
+        public async Task<ActionResult> Register(RegisterModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return View();
             }
 
             if (!string.IsNullOrEmpty(model.UserName) && !string.IsNullOrEmpty(model.Email) && !string.IsNullOrEmpty(model.Password))
             {
-                return View(model);
+                return View();
             }
             else
             {
-                return View(model);
+                return View();
             }
         }
 
-        [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult> PostLogin(LoginModel model)
+        public async Task<ActionResult> Login(LoginModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return View();
             }
 
             if (!string.IsNullOrEmpty(model.UserName) && !string.IsNullOrEmpty(model.Password))
             {
-                return View(model);
+                return View();
             }
             else
             {
-                return View(model);
+                return View();
             }
 
         }
