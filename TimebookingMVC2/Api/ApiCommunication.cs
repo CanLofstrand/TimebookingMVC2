@@ -9,7 +9,7 @@ namespace TimebookingMVC2.Api
     public class ApiCommunication
     {
         HttpClient _client = new HttpClient();
-        private readonly string url = "https://localhost:44363/";
+        private readonly string url = "https://timebookingapi20191009012914.azurewebsites.net/";
 
         /// <summary>
         /// Gets a list of all bookings from the API.
