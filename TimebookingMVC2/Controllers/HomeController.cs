@@ -15,6 +15,7 @@ namespace TimebookingMVC2.Controllers
 
         public ActionResult Add_Booking()
         {
+            // TODO: Redirect to login if not logged in
             return View();
         }
     }
