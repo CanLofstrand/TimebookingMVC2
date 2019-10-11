@@ -20,22 +20,36 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Add booking", "Add_Booking", "Home")</li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="@Url.Action("Register", "Account")">
-                            <span class="glyphicon glyphicon-registration-mark"></span>
-                            Register
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("Login", "Account")">
-                            <span class="glyphicon glyphicon-log-in"></span>
-                            Login
-                        </a>
-                    </li>
-                </ul>
+
+                @if (ViewBag.IsLoggedIn == true)
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="@Url.Action("Logout", "Account")">
+                                <span class="glyphicon glyphicon-log-out"></span>
+                                Logout
+                            </a>
+                        </li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="@Url.Action("Register", "Account")">
+                                <span class="glyphicon glyphicon-registration-mark"></span>
+                                Register
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Login", "Account")">
+                                <span class="glyphicon glyphicon-log-in"></span>
+                                Login
+                            </a>
+                        </li>
+                    </ul>
+                }
             </div>
         </div>
     </div>

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,10 +18,26 @@ namespace TimebookingMVC2.Api
         HttpClient _client = new HttpClient();
         private readonly string url = "https://timebookingapi20191009012914.azurewebsites.net/";
 
-        /// <summary>
-        /// Gets a list of all bookings from the API.
-        /// </summary>
-        /// <returns></returns>
+        //Login 
+        public string PostToken(User user)
+        {
+            var client = new RestClient(@"https://localhost:44363");
+            var request = new RestRequest(@"https://localhost:44363/oauth/token", Method.POST);
+
+            request.AddParameter("username", user.UserName);
+            request.AddParameter("password", user.UserPassword);
+            request.AddParameter("grant_type", "password");
+
+            var response = client.Execute(request);
+
+            if (response.IsSuccessful)
+            {
+                return response.Content;
+            }
+            else
+                return string.Empty;
+        }
+
         public async Task<List<Booking>> GetBookingsAsync()
         {
             try
@@ -39,11 +56,6 @@ namespace TimebookingMVC2.Api
             catch { return null; }
         }
 
-        /// <summary>
-        /// Posts a booking to the API to save in the database.
-        /// </summary>
-        /// <param name="booking"></param>
-        /// <returns></returns>
         public bool Post(Booking booking)
         {
             try
