@@ -92,7 +92,6 @@ namespace TimebookingMVC2.Controllers
                     ViewBag.LoginInfo = token;
                     ViewBag.IsLoggedIn = true;
                     return View();
-                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
