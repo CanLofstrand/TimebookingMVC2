@@ -28,7 +28,7 @@ namespace TimebookingMVC2.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> Register(RegisterModel model)
+        public async Task<ActionResult> Register(RegisterModel model)  //Returns error 409 (conflict)
         {
             if (!ModelState.IsValid)
             {
@@ -37,23 +37,26 @@ namespace TimebookingMVC2.Controllers
 
             if (!string.IsNullOrEmpty(model.UserName) && !string.IsNullOrEmpty(model.Email) && !string.IsNullOrEmpty(model.Password))
             {
-                // Send to api and await getting OK
-                Api.Models.User user = new User()
+                var api = new ApiCommunication();
+
+                var user = new User
                 {
                     UserName = model.UserName,
                     UserEmail = model.Email,
-                    UserPassword = model.Password
+                    UserPassword = model.Password,
+                    UserRole = "User"
                 };
 
-                // TODO: Error message/something else if could not be created
-                // Ok message if created (or just log in user?)
-                // Possibly more results from apicomm for different errors
-                if (_apiComm.Post(user))
-                    ; // User created
-                else
-                    ; // Not created
+                var response = api.PostRegister(user);
 
-                return View();
+                if (!string.IsNullOrEmpty(response))
+                {
+                    ViewBag.IsRegistered = true;
+                    return View();
+                }
+                else
+                    ViewBag.IsRegistered = false;
+                    return View();
             }
             else
             {
@@ -72,31 +75,40 @@ namespace TimebookingMVC2.Controllers
             if (!string.IsNullOrEmpty(model.UserName) && !string.IsNullOrEmpty(model.Password))
             {
                 var api = new ApiCommunication();
-
-                var user = new User()
-                {
-                    UserName = model.UserName,
-                    UserPassword = model.Password,
-                    UserRole = "User"
-                };
+                var token = string.Empty;
 
                 if (model.UserName == "Admin")
                 {
-                    user.UserRole = "Admin";
-                }
+                    var user = new User()
+                    {
+                        UserName = model.UserName,
+                        UserPassword = model.Password,
+                        UserRole = "Admin"
+                    };
 
-                var token = api.PostToken(user);
+                    token = api.PostToken(user);
+                }
+                else
+                {
+                    var user = new User()
+                    {
+                        UserName = model.UserName,
+                        UserPassword = model.Password,
+                        UserRole = "User"
+                    };
+
+                    token = api.PostToken(user);
+                }
 
                 if (!string.IsNullOrEmpty(token))
                 {
-                    ViewBag.LoginInfo = token;
-                    ViewBag.IsLoggedIn = true;
-                    return View();
+                    TempData["isloggedin"] = "true";
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
                     ViewBag.LoginInfo = "Incorrect username or password";
-                    ViewBag.IsLoggedIn = false;
+                    TempData["isloggedin"] = "false";
                     return View();
                 }
             }

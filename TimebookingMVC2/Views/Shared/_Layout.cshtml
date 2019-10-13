@@ -22,11 +22,11 @@
                 <ul class="nav navbar-nav">
                 </ul>
 
-                @if (ViewBag.IsLoggedIn == true)
+                @if (ViewBag.isloggedin == true)
                 {
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="@Url.Action("Logout", "Account")">
+                            <a href="@Url.Action("Index", "Home")">
                                 <span class="glyphicon glyphicon-log-out"></span>
                                 Logout
                             </a>

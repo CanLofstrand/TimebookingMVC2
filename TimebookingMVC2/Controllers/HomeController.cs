@@ -8,14 +8,19 @@ namespace TimebookingMVC2.Controllers
 {
     public class HomeController : Controller
     {
+        public bool IsLoggedIn { get; set; } = false;
         public ActionResult Index()
         {
-            return View();
-        }
+            var _isLoggedIn = TempData["isloggedin"] as string;
+            if (_isLoggedIn == "true")
+            {
+                IsLoggedIn = true;
+            }
+            else
+                IsLoggedIn = false;
 
-        public ActionResult Add_Booking()
-        {
-            // TODO: Redirect to login if not logged in
+            ViewBag.isloggedin = IsLoggedIn;
+
             return View();
         }
     }

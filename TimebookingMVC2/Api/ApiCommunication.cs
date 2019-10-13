@@ -38,6 +38,28 @@ namespace TimebookingMVC2.Api
                 return string.Empty;
         }
 
+        //Register
+        public string PostRegister(User user)
+        {
+            var client = new RestClient(@"https://localhost:44363");
+            var request = new RestRequest(@"https://localhost:44343/Account/Register", Method.POST);
+
+            request.AddParameter("UserName", user.UserName);
+            request.AddParameter("UserEmail", user.UserEmail);
+            request.AddParameter("UserPassword", user.UserPassword);
+            request.AddParameter("UserRole", "User");
+
+            var response = client.Execute(request);
+
+            if (response.IsSuccessful)
+            {
+                return response.Content;
+            }
+            else
+                return string.Empty;
+            
+        }
+
         public async Task<List<Booking>> GetBookingsAsync()
         {
             try
@@ -74,11 +96,6 @@ namespace TimebookingMVC2.Api
             catch { return false; }
         }
 
-        /// <summary>
-        /// Delete a booking from the database.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public bool DeleteBooking(int id)
         {
             try
