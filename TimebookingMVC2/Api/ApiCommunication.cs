@@ -32,7 +32,14 @@ namespace TimebookingMVC2.Api
 
             if (response.IsSuccessful)
             {
-                return response.Content;
+                var parsedToken = JsonConvert.DeserializeObject<Token>(response.Content.ToString());
+
+                if (!string.IsNullOrEmpty(parsedToken.access_token))
+                {
+                    return parsedToken.access_token;
+                }
+                else
+                    return string.Empty;
             }
             else
                 return string.Empty;
@@ -42,12 +49,11 @@ namespace TimebookingMVC2.Api
         public string PostRegister(User user)
         {
             var client = new RestClient(@"https://localhost:44363");
-            var request = new RestRequest(@"https://localhost:44343/Account/Register", Method.POST);
+            var request = new RestRequest(@"https://localhost:44363/user", Method.POST);
 
             request.AddParameter("UserName", user.UserName);
             request.AddParameter("UserEmail", user.UserEmail);
             request.AddParameter("UserPassword", user.UserPassword);
-            request.AddParameter("UserRole", "User");
 
             var response = client.Execute(request);
 

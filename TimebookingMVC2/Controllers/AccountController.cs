@@ -28,7 +28,7 @@ namespace TimebookingMVC2.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> Register(RegisterModel model)  //Returns error 409 (conflict)
+        public async Task<ActionResult> Register(RegisterModel model) 
         {
             if (!ModelState.IsValid)
             {
@@ -43,19 +43,18 @@ namespace TimebookingMVC2.Controllers
                 {
                     UserName = model.UserName,
                     UserEmail = model.Email,
-                    UserPassword = model.Password,
-                    UserRole = "User"
+                    UserPassword = model.Password
                 };
 
                 var response = api.PostRegister(user);
 
                 if (!string.IsNullOrEmpty(response))
                 {
-                    ViewBag.IsRegistered = true;
+                    ViewBag.registered = "Account registered, you can now log in.";
                     return View();
                 }
                 else
-                    ViewBag.IsRegistered = false;
+                    ViewBag.IsRegistered = "An error occured during registration.";
                     return View();
             }
             else
@@ -102,8 +101,10 @@ namespace TimebookingMVC2.Controllers
 
                 if (!string.IsNullOrEmpty(token))
                 {
+                    ViewBag.LoginInfo = token;
                     TempData["isloggedin"] = "true";
-                    return RedirectToAction("Index", "Home");
+                    return View();
+                    //return RedirectToAction("Index", "Home");
                 }
                 else
                 {
