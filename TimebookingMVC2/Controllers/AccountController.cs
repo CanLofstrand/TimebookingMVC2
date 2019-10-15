@@ -27,7 +27,6 @@ namespace TimebookingMVC2.Controllers
             return View();
         }
 
-        [AllowAnonymous]
         public async Task<ActionResult> Register(RegisterModel model) 
         {
             if (!ModelState.IsValid)
@@ -47,14 +46,14 @@ namespace TimebookingMVC2.Controllers
                 };
 
                 var response = api.PostRegister(user);
-
-                if (!string.IsNullOrEmpty(response))
+                
+                if (response == true)
                 {
                     ViewBag.registered = "Account registered, you can now log in.";
                     return View();
                 }
                 else
-                    ViewBag.IsRegistered = "An error occured during registration.";
+                    ViewBag.registered = "An error occured during registration.";
                     return View();
             }
             else
@@ -63,7 +62,6 @@ namespace TimebookingMVC2.Controllers
             }
         }
 
-        [AllowAnonymous]
         public async Task<ActionResult> Login(LoginModel model)
         {
             if (!ModelState.IsValid)
@@ -103,8 +101,7 @@ namespace TimebookingMVC2.Controllers
                 {
                     ViewBag.LoginInfo = token;
                     TempData["isloggedin"] = "true";
-                    return View();
-                    //return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
