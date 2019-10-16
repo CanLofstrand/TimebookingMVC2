@@ -46,39 +46,6 @@ namespace TimebookingMVC2.Controllers
                 Update(CallBackUpdateType.Full);
             }
 
-            protected override void OnEventResize(EventResizeArgs e)
-            {
-                var api = new ApiCommunication();
-
-                var response = api.GetBookingsAsync(Token);
-
-                //create new booking
-                var toBeResized = response.Result.Where(x => x.Id == Convert.ToInt32(e.Id)).First();
-                toBeResized.Date = e.NewStart;
-                var endDate = toBeResized.Date.AddMinutes(30);
-                endDate = e.NewEnd;
-
-                //post new booking
-
-                Update();
-            }
-
-            protected override void OnEventMove(EventMoveArgs e)
-            {
-                var api = new ApiCommunication();
-
-                var response = api.GetBookingsAsync(Token);
-
-                var toBeMoved = response.Result.Where(x => x.Id == Convert.ToInt32(e.Id)).First();
-                toBeMoved.Date = e.NewStart;
-                var endDate = toBeMoved.Date.AddMinutes(30);
-                endDate = e.NewEnd;
-
-                //post new booking
-
-                Update();
-            }
-
             protected override void OnTimeRangeSelected(TimeRangeSelectedArgs e)
             {
                 var toBeCreated = new BookingWEndDate
