@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,17 +68,31 @@ namespace TimebookingMVC2.Api
         }
 
         //Get Bookings
-        public async Task<List<Booking>> GetBookingsAsync(string token)
+        public async Task<List<BookingWEndDate>> GetBookingsAsync(string token)
         {
             try
             {
                 var request = new RestRequest(url + "booking", Method.GET);
 
-                request.AddHeader("Authorization: " + "Bearer ", token);
+                request.AddHeader("Authorization", "Bearer " + token);
 
-                var response = await client.ExecuteGetTaskAsync(request);
+                var response = client.Execute(request);
 
-                return JsonConvert.DeserializeObject<List<Booking>>(response.ToString());
+                var jsonList = JsonConvert.DeserializeObject<List<Booking>>(response.Content.ToString());
+                var bookingList = new List<BookingWEndDate>();
+
+                foreach (var i in jsonList)
+                {
+                    bookingList.Add(new BookingWEndDate() 
+                    {
+                        Date = i.Date,
+                        EndDate = i.Date.AddMinutes(30),
+                        Id = i.Id,
+                        UserName = i.UserName 
+                    });
+                }
+
+                return bookingList;
             }
             catch (Exception e)
             {
@@ -92,8 +107,9 @@ namespace TimebookingMVC2.Api
         {
             var request = new RestRequest(url + "booking", Method.POST);
 
-            request.AddHeader("Authorization: " + "Bearer ", token);
-            request.AddParameter("Date", "2019-10-15T10:30:00");                                
+            request.AddHeader("Authorization", "Bearer " + token);
+            request.AddParameter("Date", "2019-10-15T10:30:00");
+            request.AddParameter("EndDate", "2019-10-15T11:00:00");
             if (CurrentUser != string.Empty)
             {
                 request.AddParameter("UserName", CurrentUser);
@@ -110,11 +126,13 @@ namespace TimebookingMVC2.Api
         }
 
         //Delete booking
-        public bool DeleteBooking(int id)
+        public bool DeleteBooking(int id, string token)
         {
             try
             {
                 var request = new RestRequest(url + "booking/" + id, Method.DELETE);
+
+                request.AddHeader("Authorization", "Bearer " + token);
 
                 var response = client.ExecuteTaskAsync(request);
 

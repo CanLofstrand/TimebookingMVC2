@@ -99,8 +99,9 @@ namespace TimebookingMVC2.Controllers
 
                 if (!string.IsNullOrEmpty(token))
                 {
-                    ViewBag.LoginInfo = token;
                     TempData["isloggedin"] = "true";
+                    TempData["token"] = token;
+                    TempData["username"] = User.Identity.Name;
                     return RedirectToAction("Index", "Home");
                 }
                 else

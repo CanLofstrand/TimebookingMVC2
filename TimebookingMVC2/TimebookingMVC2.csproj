@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DayPilot.Web.Mvc">
+      <HintPath>..\..\..\..\..\Desktop\TutorialMvc5LiteCalendar\Lib\DayPilot.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="DHTMLX, Version=4.0.6901.32971, Culture=neutral, PublicKeyToken=53f24791214eb8ac, processorArchitecture=MSIL">
       <HintPath>..\packages\DHTMLX.Scheduler.NET.4.0.1\lib\DHTMLX.dll</HintPath>
     </Reference>
@@ -123,6 +126,7 @@
   <ItemGroup>
     <Compile Include="Api\ApiCommunication.cs" />
     <Compile Include="Api\Models\Booking.cs" />
+    <Compile Include="Api\Models\BookingWEndDate.cs" />
     <Compile Include="Api\Models\Token.cs" />
     <Compile Include="Api\Models\User.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -149,6 +153,7 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\DayPilot\daypilot-all.min.js" />
     <Content Include="Scripts\dhtmlxScheduler\dhtmlxscheduler.css" />
     <Content Include="Scripts\dhtmlxScheduler\dhtmlxscheduler.js" />
     <Content Include="Scripts\dhtmlxScheduler\dhtmlxscheduler_contrast_black.css" />
