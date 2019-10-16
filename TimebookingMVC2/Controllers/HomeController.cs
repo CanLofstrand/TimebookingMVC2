@@ -71,8 +71,7 @@ namespace TimebookingMVC2.Controllers
 
                 var response = api.GetBookingsAsync("NtT7_WAEH95Xmu9mz15ChFts36RWjCJtIyFOQb1-yXZIuVSi4IIrwQMjgomWbZPtBDnuJHT_g3hdvbw6Iwix2T4h02gYKo624Rp2Wcuj9jyCFBVNTdiPfeakMFnl7BZGfL4PpEvYTHknPdAQx2mG_T1brjmWdBGLFv-Ef1Fl_nVQ7nN2-1ZKQoCXVLO_zAk5fqSkV03-BPEf4SwlBahCW32Cq0euYO4i6c9WkIOFiJspuuKQpFAPiuBhp_POQ8nHSgqUNA0a251Jxjntkdf1L23-lvHLGKhiMshlFaKfj7m-DT22saNQTz0GDlL-76EdkME2fK-Q__zpmQvigV8byw");
 
-                var list = response.Result;
-                Events = list;
+                Events = response.Result;
 
                 DataIdField = "Id";
                 DataTextField = "UserName";
