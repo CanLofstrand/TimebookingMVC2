@@ -27,7 +27,7 @@ namespace TimebookingMVC2.Controllers
             else
                 IsLoggedIn = false;
             Token = TempData["token"] as string;
-            //Username = TempData["username"] as string;
+
 
             ViewBag.isloggedin = IsLoggedIn;
 
@@ -56,7 +56,10 @@ namespace TimebookingMVC2.Controllers
 
                 var api = new ApiCommunication();
 
-                var response = api.PostBooking(toBeCreated, Token);
+                if (e.Start.Hour >= 8 && e.End.Hour <= 17)
+                {
+                    var response = api.PostBooking(toBeCreated, Token);
+                }
 
                 Update();
             }
