@@ -61,6 +61,17 @@ namespace TimebookingMVC2.Controllers
                 Update();
             }
 
+            protected override void OnEventClick(EventClickArgs e)
+            {
+                var toBeDeleted = Convert.ToInt32(e.Id);
+
+                var api = new ApiCommunication();
+
+                var response = api.DeleteBooking(toBeDeleted, Token);
+
+                Update();
+            }
+
             protected override void OnFinish()
             {
                 if (UpdateType == CallBackUpdateType.None)
