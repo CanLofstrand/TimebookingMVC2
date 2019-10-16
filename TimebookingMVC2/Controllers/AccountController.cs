@@ -101,7 +101,7 @@ namespace TimebookingMVC2.Controllers
                 {
                     TempData["isloggedin"] = "true";
                     TempData["token"] = token;
-                    TempData["username"] = User.Identity.Name;
+                    //TempData["username"] = User.Identity.Name;
                     return RedirectToAction("Index", "Home");
                 }
                 else

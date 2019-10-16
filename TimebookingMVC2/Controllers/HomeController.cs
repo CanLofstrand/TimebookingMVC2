@@ -14,7 +14,7 @@ namespace TimebookingMVC2.Controllers
 {
     public class HomeController : Controller
     {
-        public bool IsLoggedIn { get; set; } = false;
+        public static bool IsLoggedIn { get; set; } = false;
         public static string Token { get; set; }
         public static string Username { get; set; }
         public ActionResult Index()
@@ -27,7 +27,7 @@ namespace TimebookingMVC2.Controllers
             else
                 IsLoggedIn = false;
             Token = TempData["token"] as string;
-            Username = TempData["username"] as string;
+            //Username = TempData["username"] as string;
 
             ViewBag.isloggedin = IsLoggedIn;
 
@@ -48,14 +48,15 @@ namespace TimebookingMVC2.Controllers
 
             protected override void OnTimeRangeSelected(TimeRangeSelectedArgs e)
             {
-                var toBeCreated = new BookingWEndDate
+                var toBeCreated = new Booking
                 {
                     Date = e.Start,
-                    EndDate = e.End,
                     UserName = Username
                 };
 
-                //post booking
+                var api = new ApiCommunication();
+
+                var response = api.PostBooking(toBeCreated, Token);
 
                 Update();
             }
@@ -69,9 +70,14 @@ namespace TimebookingMVC2.Controllers
 
                 var api = new ApiCommunication();
 
-                var response = api.GetBookingsAsync("NtT7_WAEH95Xmu9mz15ChFts36RWjCJtIyFOQb1-yXZIuVSi4IIrwQMjgomWbZPtBDnuJHT_g3hdvbw6Iwix2T4h02gYKo624Rp2Wcuj9jyCFBVNTdiPfeakMFnl7BZGfL4PpEvYTHknPdAQx2mG_T1brjmWdBGLFv-Ef1Fl_nVQ7nN2-1ZKQoCXVLO_zAk5fqSkV03-BPEf4SwlBahCW32Cq0euYO4i6c9WkIOFiJspuuKQpFAPiuBhp_POQ8nHSgqUNA0a251Jxjntkdf1L23-lvHLGKhiMshlFaKfj7m-DT22saNQTz0GDlL-76EdkME2fK-Q__zpmQvigV8byw");
+                var response = api.GetBookingsAsync(Token);
 
-                Events = response.Result;
+                if (HomeController.IsLoggedIn)
+                {
+                    Events = response.Result;
+                }
+                else
+                    Events = null;
 
                 DataIdField = "Id";
                 DataTextField = "UserName";

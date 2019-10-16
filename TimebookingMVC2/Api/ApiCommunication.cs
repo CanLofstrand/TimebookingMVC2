@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using TimebookingMVC2.Api.Models;
+using TimebookingMVC2.Controllers;
 
 namespace TimebookingMVC2.Api
 {
@@ -37,7 +38,7 @@ namespace TimebookingMVC2.Api
 
                 if (!string.IsNullOrEmpty(parsedToken.access_token))
                 {
-                    CurrentUser = user.UserName;
+                    HomeController.Username = user.UserName;
                     return parsedToken.access_token;
                 }
                 else
@@ -103,16 +104,15 @@ namespace TimebookingMVC2.Api
         }
 
         //Add booking
-        public bool PostBooking(Booking booking, string token)                         //Fix this
+        public bool PostBooking(Booking booking, string token)                       
         {
             var request = new RestRequest(url + "booking", Method.POST);
 
             request.AddHeader("Authorization", "Bearer " + token);
-            request.AddParameter("Date", "2019-10-15T10:30:00");
-            request.AddParameter("EndDate", "2019-10-15T11:00:00");
-            if (CurrentUser != string.Empty)
+            request.AddParameter("Date", booking.Date);
+            if (HomeController.Username != string.Empty)
             {
-                request.AddParameter("UserName", CurrentUser);
+                request.AddParameter("UserName", HomeController.Username);
             }
 
             var response = client.Execute(request);
